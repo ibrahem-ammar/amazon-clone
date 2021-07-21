@@ -2,7 +2,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { StarIcon } from "@heroicons/react/solid";
 import Currency from "react-currency-formatter";
-
+import { useDispatch } from "react-redux";
+import { addToBasket } from "../slices/basketSlice";
 
 const MAX_RATING = 5;
 const MIN_RATING = 1;
@@ -12,9 +13,17 @@ export default function Product({ product }) {
     const { id,title,description,category,image,price } = product;
     const [rating, setrating] = useState(Math.floor(Math.random()*(MAX_RATING-MIN_RATING))+1);
     const [hasPrime, sethasPrime] = useState(Math.random() < 0.5);
+    const dispatch = useDispatch();
+
+    product.rating = rating;
+    product.hasPrime = hasPrime;
+
+    const addProductToBasket = () => {
+        dispatch(addToBasket(product));
+    }
 
     return (
-        <div className="relative flex flex-col m-5 bg-white z-30 p-10 pt-0 text-xs">
+        <section className="relative flex flex-col m-5 bg-white z-30 p-10 pt-0 text-xs">
             <p className="text-right italic mt-2 mb-3">{category}</p>
 
             <Image 
@@ -27,7 +36,7 @@ export default function Product({ product }) {
             <h4 className="my-3">{title}</h4>
             
             <div className="flex">
-                {Array(rating).fill().map( ( _ , i ) => <StarIcon className="h-5 text-yellow-500" /> )}
+                {Array(rating).fill().map( ( _ , i ) => <StarIcon className="h-5 text-yellow-500" key={ i }/> )}
             </div>
 
             <p className="line-clamp-2 my-2">{description}</p>
@@ -38,13 +47,13 @@ export default function Product({ product }) {
 
             {hasPrime && (
                 <div className="flex items-center space-x-2 -mt-5">
-                    <img className="w-12" src="https://links.papareact.com/fdw" alt=""/>
+                    <img loading="lazy" className="w-12" src="https://links.papareact.com/fdw" alt=""/>
                     <p className="capitalize text-gray-500">free next-day delivery</p>
                 </div>
             )}
 
-            <button className="mt-auto button">add to basket</button>
+            <button onClick={addProductToBasket} className="mt-auto button">add to basket</button>
 
-        </div>
+        </section>
     )
 }

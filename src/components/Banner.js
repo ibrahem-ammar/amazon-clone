@@ -3,7 +3,7 @@ import { Carousel } from 'react-responsive-carousel';
 
 export default function Banner() {
     return (
-        <div className="relative">
+        <section className="relative">
             <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-gray-100 to-transparent z-20" />
             <Carousel 
                 autoPlay
@@ -24,6 +24,6 @@ export default function Banner() {
                 </div>
 
             </Carousel>
-        </div>
+        </section>
     )
 }
